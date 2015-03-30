@@ -1,0 +1,36 @@
+!!! 5
+%html
+  %head(lang="zh-cn")
+    %meta(charset="UTF-8")
+    %meta(name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0")
+    %meta(name="format-detection" content="telphone=no")
+    %title 我的共享
+    %link(href="./.src/css/android.css" rel="stylesheet")
+  %body
+    #top
+      %img#menu(src="./.src/img/menu.png" )
+      %span#title 当前路径
+    #aside
+      .welcome
+        %span 设置
+      .config
+        %label(for="config-hide").label-text 显示隐藏文件
+        %input#config-hide.checkbox(type="checkbox" checked="")
+        .checkbox-wrapper
+          %label.checkbox-label(for="config-hide")
+      .config#config-floatButton
+        %label(for="config-FB").label-text 显示浮动按钮
+        %input#config-FB.checkbox(type="checkbox" checked="checked")
+        .checkbox-wrapper
+          %label.checkbox-label(for="config-FB")
+      .config#config-clean
+        %label.label-text 清除本地数据
+      .config#config-load
+        %label.label-text 手动刷新文件(IOS&WP)
+    #article
+      .down
+        %img#refresh-img(src="./.src/img/down.png" )
+        %span#refresh-text 下拉刷新
+  %script(src="./.src/js/framework/zepto.min.js")
+  %script(src="./.src/js/framework/animateEasy.min.js")
+  %script(src="./.src/js/index.js")
