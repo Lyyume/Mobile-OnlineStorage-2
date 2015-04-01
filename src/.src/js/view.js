@@ -179,7 +179,13 @@ var view = function(){
                 div.appendChild(type);
                 div.appendChild(text);
                 $('#article').append(div);
+                if(renderStyle(text,'width',true) > (winWid - 88)){
+                    var cache = text.innerHTML;
+                    text.innerHTML = cache.substring(0,~~((winWid - 88) / 22)) + '...' + cache.substring(cache.length - 5,cache.length);
+                }
+
                 $(div).one('touchend',function(e){
+                    console.log(e);
                     var target = this['src'],
                         file = document.getElementsByClassName('file'),
                         fileLeng = file.length;
@@ -208,6 +214,20 @@ var view = function(){
                 },100 * u,fileList[u])
             }
 
+            if(_pointer === _src){
+                $('#title').html(window.location.origin.replace(/^\w+:\/\//,''))
+            }
+            else{
+                var m = '.';
+                for(var n = 0;n < _arrPoint.length;n++){
+                    m = m + '/' + _arrPoint[n];
+                }
+                if(m.length > (winWid - 72) / 16){
+                    m = '...'
+                }
+                $('#title').html(m);
+            }
+
         },
 
         addMask: function(){
@@ -218,12 +238,45 @@ var view = function(){
             mask.style.zIndex = '10';
             mask.id = 'mask';
             $('body').prepend(mask);
+        },
+
+        addConfirm: function(str,fn){
+            var confirm = document.createElement('div');
+            confirm.innerHTML = '<div>' + str + '</div><span id="confirm-yes">确认</span><span id="confirm-no">取消</span>';
+            confirm.classList.add('confirm');
+            view.addMask();
+            $('#mask').css({
+                'background-color':'rgba(0,0,0,0.4)',
+                'z-index':'20'
+            }).append(confirm).on('tap',function(e){
+                if(e.target === this){
+                    $('#mask').remove();
+                }
+            });
+            $('#confirm-yes').on('tap',function(){
+                localStorage.clear();
+                $('#mask').remove();
+            });
+            $('#confirm-no').on('tap',function(){
+                $('#mask').remove();
+            });
+            confirm.style.marginTop = -renderStyle(confirm,'height',true)/2 + 'px';
         }
 
     };
 
     var winHei = document.documentElement.clientHeight,
         winWid = document.documentElement.clientWidth;
+
+    function renderStyle(ele,css,num){
+        num = num || false;
+        if(num){
+            return +window.getComputedStyle(ele,null)[css+''].match(/\d*/)[0];
+        }
+        else{
+            return window.getComputedStyle(ele,null)[css+'']
+        }
+    }
 
     return public
 

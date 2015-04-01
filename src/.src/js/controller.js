@@ -121,6 +121,24 @@ var controller = function(){
                 }
             });
 
+            $('#config-clean').on('tap',function(){
+                view.addConfirm('您真的要清理本地存储吗？<br>此操作将不可恢复',function(){
+                    console.log('!')
+                })
+            });
+
+            $('#config-load').on('tap',function(){
+                $('.file').remove();
+                view.listLoad();
+            });
+
+            $('.config').on('touchstart',function(e){
+                e.currentTarget.style.backgroundColor = '#4FC3F7';
+            });
+            $('.config').on('touchend',function(e){
+                e.currentTarget.style.backgroundColor = '#FFFFFF';
+            });
+
             model.getSrc();
 
         }
