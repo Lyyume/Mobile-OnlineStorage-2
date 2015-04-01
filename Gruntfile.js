@@ -21,7 +21,7 @@ module.exports = function (grunt){
                 }
             },
             sass: {
-                files: ['<%= config.src %>/css/{,*/}*.{scss,sass}'],
+                files: ['<%= config.src %>/.src/css/{,*/}*.{scss,sass}'],
                 tasks: ['sass:go','autoprefixer:go'],
                 options: {
                     livereload: true
@@ -29,8 +29,9 @@ module.exports = function (grunt){
             },
             reload: {
                 files: [
-                    '<%= config.src %>/js/{,*/}*.js',
-                    '<%= config.src %>/images/{,*/}*'
+                    '<%= config.src %>/.src/js/{,*/}*.js',
+                    '<%= config.src %>/.src/css/{,*/}*.css',
+                    '<%= config.src %>/.src/img/{,*/}*'
                 ],
                 options: {
                     livereload: true
@@ -49,9 +50,9 @@ module.exports = function (grunt){
         sass:{
             go:{
                 expand: true,
-                cwd: '<%= config.src %>/css/',
+                cwd: '<%= config.src %>/.src/css/',
                 src: ['*.{scss,sass}'],
-                dest: '<%= config.src %>/css/',
+                dest: '<%= config.src %>/.src/css/',
                 ext: '.css'
             }
         },
@@ -62,16 +63,10 @@ module.exports = function (grunt){
             go: {
                 files: [{
                     expand: true,
-                    cwd: 'src/css/',
+                    cwd: 'src/.src/css/',
                     src: '{,*/}*.css',
-                    dest: 'src/css/'
+                    dest: 'src/.src/css/'
                 }]
-            }
-        },
-        copy:{
-            test:{
-                src: '<%= config.src %>/index.html',
-                dest: '<%= config.dist %>/index.html'
             }
         }
     });

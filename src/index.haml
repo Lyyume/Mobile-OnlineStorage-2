@@ -5,24 +5,29 @@
     %meta(name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0")
     %meta(name="format-detection" content="telphone=no")
     %title 我的共享
-    %link(href="./.src/css/android.css" rel="stylesheet")
+    %link(href="./.src/css/index.css" rel="stylesheet")
   %body
     #top
       %img#menu(src="./.src/img/menu.png" )
-      %span#title 当前路径
+      %span#title local测试
     #aside
       .welcome
         %span 设置
-      .config
-        %label(for="config-hide").label-text 显示隐藏文件
-        %input#config-hide.checkbox(type="checkbox" checked="")
+      .config#config-hide
+        %label(for="config-hide-checkbox").label-text 显示隐藏文件
+        %input#config-hide-checkbox.checkbox(type="checkbox")
         .checkbox-wrapper
-          %label.checkbox-label(for="config-hide")
+          %label.checkbox-label(for="config-hide-checkbox")
+      .config#config-sys
+        %label(for="config-sys-checkbox").label-text 显示系统文件
+        %input#config-sys-checkbox.checkbox(type="checkbox")
+        .checkbox-wrapper
+          %label.checkbox-label(for="config-sys-checkbox")
       .config#config-floatButton
-        %label(for="config-FB").label-text 显示浮动按钮
-        %input#config-FB.checkbox(type="checkbox" checked="checked")
+        %label(for="config-floatButton-checkbox").label-text 显示浮动按钮
+        %input#config-floatButton-checkbox.checkbox(type="checkbox")
         .checkbox-wrapper
-          %label.checkbox-label(for="config-FB")
+          %label.checkbox-label(for="config-floatButton-checkbox")
       .config#config-clean
         %label.label-text 清除本地数据
       .config#config-load
@@ -31,6 +36,9 @@
       .down
         %img#refresh-img(src="./.src/img/down.png" )
         %span#refresh-text 下拉刷新
+    #float-button
+      %div +
   %script(src="./.src/js/framework/zepto.min.js")
+  %script(src="./.src/js/framework/touch.js")
   %script(src="./.src/js/framework/animateEasy.min.js")
   %script(src="./.src/js/index.js")
