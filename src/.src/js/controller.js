@@ -134,8 +134,7 @@ var controller = function(){
 
             $('.config').on('touchstart',function(e){
                 e.currentTarget.style.backgroundColor = '#4FC3F7';
-            });
-            $('.config').on('touchend',function(e){
+            }).on('touchend',function(e){
                 e.currentTarget.style.backgroundColor = '#FFFFFF';
             });
 

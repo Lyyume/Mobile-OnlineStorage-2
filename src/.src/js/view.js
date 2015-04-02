@@ -4,26 +4,30 @@ var view = function(){
 
         pageInit: function(){
 
+            var configHide = document.getElementById('config-hide-checkbox'),
+                configSys = document.getElementById('config-sys-checkbox'),
+                configFB = document.getElementById('config-floatButton-checkbox');
+
+
             $('body').css('height',winHei + 'px');
             if(_config.hide){
-                $('#config-hide-checkbox')[0].checked = 'checked'
+                configHide.checked = 'checked'
             }
             else{
-                $('#config-hide-checkbox')[0].checked = ''
+                configHide.checked = ''
             }
             if(_config.sys){
-                $('#config-sys-checkbox')[0].checked = 'checked'
+                configSys.checked = 'checked'
             }
             else{
-                $('#config-sys-checkbox')[0].checked = ''
+                configSys.checked = ''
             }
             if(_config.button){
                 $('#float-button').css('display','block');
-                $('#config-floatButton-checkbox')[0].checked = 'checked'
+                configFB.checked = 'checked'
             }
             else{
-
-                $('#config-floatButton-checkbox')[0].checked = ''
+                configFB.checked = ''
             }
 
             controller.regEvents();
@@ -46,18 +50,18 @@ var view = function(){
                 fileList ,fileLeng,
                 configHide = _config.hide ,configSys = _config.sys;
 
-            function setType(target){
-
-                function mySome(arr,str){
-                    var leng = arr.length,
-                        _str = str.toLowerCase();
-                    for(var i = 0;i < leng;i++){
-                        if (arr[i] === _str){
-                            return true
-                        }
+            function mySome(arr,str){
+                var leng = arr.length,
+                    _str = str.toLowerCase();
+                for(var i = 0;i < leng;i++){
+                    if (arr[i] === _str){
+                        return true
                     }
-                    return false
                 }
+                return false
+            }
+
+            function setType(target){
 
                 if(mySome(ext.folder,target.____extension)){
                     type.classList.add('life-type-folder');
@@ -185,21 +189,24 @@ var view = function(){
                 }
 
                 $(div).one('touchend',function(e){
-                    console.log(e);
-                    var target = this['src'],
+                    var targetName = this['src'],
+                        target = _pointer[targetName],
                         file = document.getElementsByClassName('file'),
                         fileLeng = file.length;
-                    if(_pointer[target].____extension === ''){
+                    if(target.____extension === ''){
                         animateClick(e,this);
                         ae(file[0]).clear()._play('file-hide',function(){
-                            _pointer = _pointer[target];
-                            _arrPoint.push(target);
+                            _pointer = target;
+                            _arrPoint.push(targetName);
                             $('.file').remove();
                             view.listLoad();
                         });
                         for(var i = 1;i < fileLeng;i++){
                             ae(file[i]).clear()._play('file-hide')
                         }
+                    }
+                    else if(mySome(ext.text,target.____extension)){
+                        model.openText(JSON.stringify(target));
                     }
                 })
 

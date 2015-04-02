@@ -129,6 +129,12 @@ var model = function(){
         },
         setConfig:function(){
             localStorage.setItem('config',JSON.stringify(_config));
+        },
+        openText:function(str){
+            localStorage.setItem('openText',str);
+            setTimeout(function(){
+                window.open('./.open/text.html');
+            },0);
         }
     };
 

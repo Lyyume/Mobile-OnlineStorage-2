@@ -14,7 +14,10 @@ module.exports = function (grunt){
         config: config,
         watch: {
             haml:{
-                files: ['<%= config.src %>/{,*/}*.haml'],
+                files: [
+                    '<%= config.src %>/.open/{,*/}*.haml',
+                    '<%= config.src %>/{,*/}*.haml'
+                ],
                 tasks: ['haml:go'],
                 options: {
                     livereload: true
@@ -27,10 +30,21 @@ module.exports = function (grunt){
                     livereload: true
                 }
             },
+            sass2: { //.open
+                files: [
+                    '<%= config.src %>/.open/css/{,*/}*.{scss,sass}'
+                ],
+                tasks: ['sass:go2','autoprefixer:go2'],
+                options: {
+                    livereload: true
+                }
+            },
             reload: {
                 files: [
                     '<%= config.src %>/.src/js/{,*/}*.js',
-                    '<%= config.src %>/.src/css/{,*/}*.css',
+                    '<%= config.src %>/.src/img/{,*/}*',
+                    '<%= config.src %>/.open/js/{,*/}*.js',
+                    '<%= config.src %>/.open/img/{,*/}*',
                     '<%= config.src %>/.src/img/{,*/}*'
                 ],
                 options: {
@@ -40,7 +54,7 @@ module.exports = function (grunt){
         },
         haml:{
             go: {
-                files: grunt.file.expandMapping(['src/*.haml','src/*/*.haml'], './', {
+                files: grunt.file.expandMapping(['src/*.haml','src/.open/*.haml'], './', {
                     rename: function(base, path) {
                         return base + path.replace(/\.haml$/, '.html');
                     }
@@ -53,6 +67,13 @@ module.exports = function (grunt){
                 cwd: '<%= config.src %>/.src/css/',
                 src: ['*.{scss,sass}'],
                 dest: '<%= config.src %>/.src/css/',
+                ext: '.css'
+            },
+            go2:{ //.open
+                expand: true,
+                cwd: '<%= config.src %>/.open/css/',
+                src: ['*.{scss,sass}'],
+                dest: '<%= config.src %>/.open/css/',
                 ext: '.css'
             }
         },
@@ -67,6 +88,14 @@ module.exports = function (grunt){
                     src: '{,*/}*.css',
                     dest: 'src/.src/css/'
                 }]
+            },
+            go2: { //.open
+                files: [{
+                    expand: true,
+                    cwd: 'src/.open/css/',
+                    src: '{,*/}*.css',
+                    dest: 'src/.open/css/'
+                }]
             }
         }
     });
@@ -75,6 +104,8 @@ module.exports = function (grunt){
         'haml:go',
         'sass:go',
         'autoprefixer:go',
+        'sass:go2',
+        'autoprefixer:go2',
         'watch'
     ]);
 };
