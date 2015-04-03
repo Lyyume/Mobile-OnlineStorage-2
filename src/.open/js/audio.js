@@ -1,35 +1,65 @@
-var render = function(){
+var _src;
+
+var model = function(){
+
     var public = {
-        createAudio: function(){
+
+        getData: function(){
+
+            _src = JSON.parse(localStorage.getItem("openAudio"));
+
+            view.pageIni();
+
+        },
+
+        loadAudio: function(){
+
             var audio = document.createElement('audio'),
                 source = document.createElement('source');
+
             audio.controls = 'controls';
-            source.src = '../' + src.____src;
-            source.type = 'audio/' + src.____extension;
+            source.src = '../' + _src.____src;
+            source.type = 'audio/' + _src.____extension;
             audio.id = 'audio';
             audio.appendChild(source);
-            stage.appendChild(audio);
-            name.innerHTML = src.____name
-        },
-        pageIni: function(){
-            play.style.width = winWid + 'px';
-            play.style.height = winWid + 'px';
-            control.style.height = winWid / 3 + 'px';
-            control.style.top = winWid + 20 + 'px';
-            view.style.top = (winHei - winWid / 3 * 4 - 20) / 2 + 'px';
-        },
+            $('#stage').append(audio);
+            $('#name').html(_src.____name);
+
+            controller.playerIni()
+
+        }
+
+    };
+
+    return public
+
+}();
+
+var controller = function(){
+
+    var public = {
+
         playerIni: function(){
+
             var audio = document.getElementById('audio'),
+                view = document.getElementById('view'),
+                play = document.getElementById('play'),
+                volume = document.getElementById('volume'),
+                time = document.getElementById('time'),
+                name = document.getElementById('name'),
+                leng = document.getElementById('leng'),
+                loop = document.getElementById('loop'),
                 check ,lengText;
+
             function audioPlay(){
                 var img = document.createElement('img'),
                     playIcon = document.getElementById('play-icon');
                 audio.play();
-                tool.touchWP(play,'touchend',audioPlay,false,true);
-                tool.touchWP(play,'touchend',audioPause);
+                $(play).off('tap',audioPlay);
+                $(play).on('tap',audioPause);
                 play.removeChild(playIcon);
                 img.id = 'play-icon';
-                img.src = './img/play.png';
+                img.src = './img/pause.png';
                 play.appendChild(img);
 
             }
@@ -37,11 +67,11 @@ var render = function(){
                 var img = document.createElement('img'),
                     playIcon = document.getElementById('play-icon');
                 audio.pause();
-                tool.touchWP(play,'touchend',audioPause,false,true);
-                tool.touchWP(play,'touchend',audioPlay);
+                $(play).off('tap',audioPause);
+                $(play).on('tap',audioPlay);
                 play.removeChild(playIcon);
                 img.id = 'play-icon';
-                img.src = './img/pause.png';
+                img.src = './img/play.png';
                 play.appendChild(img);
             }
             function getTime(){
@@ -64,16 +94,20 @@ var render = function(){
             time.value = audio.currentTime;
             volume.value = audio.volume * 100;
 
-
-            tool.touchWP(audio,'durationchange',function(){
+            $(audio).on('durationchange',function(){
                 lengText = ~~(~~audio.duration / 60) + ':' + ~~audio.duration % 60;
                 leng.innerHTML = '0:00/' + lengText;
+            }).on('play',function(){
+                time.value = 100;
+                check = setInterval(checkTime,200);
+            }).on('pause',function(){
+                clearInterval(check)
             });
-            tool.touchWP(play,'touchend',audioPlay);
-            tool.touchWP(volume,'change',function(){
+            $(play).on('tap',audioPlay);
+            $(volume).on('change',function(){
                 audio.volume = volume.value * 0.01;
             });
-            tool.touchWP(time,'change',function(){
+            $(time).on('change',function(){
                 audio.currentTime = time.value;
                 if ((~~audio.currentTime % 60) < 10){
                     leng.innerHTML = ~~(~~audio.currentTime / 60) + ':0' + ~~audio.currentTime % 60 + '/' +  lengText;
@@ -81,55 +115,65 @@ var render = function(){
                 else{
                     leng.innerHTML = ~~(~~audio.currentTime / 60) + ':' + ~~audio.currentTime % 60 + '/' +  lengText;
                 }
-            });
-            tool.touchWP(audio,'play',function(){
-                time.value = 100;
-                check = setInterval(checkTime,200);
-            });
-            tool.touchWP(audio,'pause',function(){
-                clearInterval(check)
-            });
-            tool.touchWP(time,'touchstart',function(){
+            }).on('touchstart',function(){
                 if(!audio.paused){
                     clearInterval(check)
                 }
-            });
-            tool.touchWP(time,'touchend',function(){
+            }).on('touchend',function(){
                 if(!audio.paused){
                     check = setInterval(checkTime,200);
                 }
             });
-            tool.touchWP(loop,'touchend',function(){
+            $(loop).on('touchend',function(){
                 function reset(){
                     audio.currentTime = 0;
                     audio.play();
                 }
                 if(this.style.opacity){
                     this.style.opacity = '';
-                    tool.touchWP(audio,'ended',reset,false,true)
+                    $(audio).off('ended',reset);
                 }
                 else{
                     this.style.opacity = '0.8';
-                    tool.touchWP(audio,'ended',reset)
+                    $(audio).on('ended',reset);
                 }
             })
+
         }
+
+    };
+
+    return public
+
+}();
+
+var view = function(){
+
+    var public = {
+
+        pageIni: function(){
+
+            play.style.width = winWid + 'px';
+            play.style.height = winWid + 'px';
+            control.style.height = winWid / 3 + 'px';
+            control.style.top = winWid + 20 + 'px';
+            view.style.top = (winHei - winWid / 3 * 4 - 20) / 2 + 'px';
+
+            model.loadAudio();
+
+        }
+
     };
 
     var view = document.getElementById('view'),
-        stage = document.getElementById('stage'),
-        curtain = document.getElementById('curtain'),
         play = document.getElementById('play'),
-        volume = document.getElementById('volume'),
-        time = document.getElementById('time'),
         control = document.getElementById('control'),
-        name = document.getElementById('name'),
-        leng = document.getElementById('leng'),
-        loop = document.getElementById('loop'),
-
 
         winHei = document.documentElement.clientHeight,
         winWid = document.documentElement.clientWidth;
 
     return public
+
 }();
+
+model.getData();

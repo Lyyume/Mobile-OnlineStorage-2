@@ -10,7 +10,7 @@
     #view
       #stage
         #play
-          %img#play-icon(src="./img/pause.png" )
+          %img#play-icon(src="./img/play.png" )
         %input#time(type="range")
         #control
           #name
@@ -18,4 +18,7 @@
           #leng
           %img#volume-icon(src="./img/volume.png")
           %input#volume(type="range" min="0" max="100")
-  %script(src="js/audio/audio.js")
+  %script(src="../.src/js/framework/zepto.min.js")
+  %script(src="../.src/js/framework/touch.js")
+  %script(src="../.src/js/framework/animateEasy.min.js")
+  %script(src="js/audio.js")

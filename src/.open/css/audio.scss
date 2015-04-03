@@ -47,6 +47,9 @@
 #time[type=range] {
   -webkit-appearance: none;
 }
+#time[type=range]:focus {
+  outline: none;
+}
 #time[type=range]::-webkit-slider-thumb {
   -webkit-appearance: none;
   height: 20px;
@@ -105,6 +108,9 @@
 }
 #volume[type=range] {
   -webkit-appearance: none;
+}
+#volume[type=range]:focus {
+  outline: none;
 }
 #volume[type=range]::-webkit-slider-thumb {
   -webkit-appearance: none;

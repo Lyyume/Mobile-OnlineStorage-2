@@ -142,6 +142,12 @@ var model = function(){
             setTimeout(function(){
                 window.open('./.open/image.html');
             },0);
+        },
+        openAudio:function(str){
+            localStorage.setItem('openAudio',str);
+            setTimeout(function(){
+                window.open('./.open/audio.html');
+            },0);
         }
     };
 

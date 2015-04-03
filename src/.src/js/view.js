@@ -197,6 +197,9 @@ var view = function(){
                     else if(mySome(ext.image,target.____extension)){
                         model.openImage(JSON.stringify(target),JSON.stringify(_pointer));
                     }
+                    else if(mySome(ext.audio,target.____extension)){
+                        model.openAudio(JSON.stringify(target));
+                    }
                 })
 
             }
