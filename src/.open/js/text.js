@@ -30,11 +30,11 @@ var model = function(){
                         view.loadText();
                     }
                     else{
-                        //处理其他响应
+
                     }
                 }
                 else{
-                    //通信信息
+
                 }
             };
             xhr.open('GET','../' + _src.____src,true);

@@ -104,20 +104,6 @@ var view = function(){
                 wave.classList.add('ani-wave');
                 focus.appendChild(wave);
             }
-
-            ae('body')._add({
-                id:'file-show',
-                final:true,
-                0:'opacity:0',
-                500:'opacity:1'
-            });
-            ae('body')._add({
-                id:'file-hide',
-                final:true,
-                0:'opacity:1',
-                500:'opacity:0'
-            });
-
             if(_pointer !== _src){
                 div = document.createElement('div');
                 type = document.createElement('div');
@@ -208,6 +194,9 @@ var view = function(){
                     else if(mySome(ext.text,target.____extension)){
                         model.openText(JSON.stringify(target));
                     }
+                    else if(mySome(ext.image,target.____extension)){
+                        model.openImage(JSON.stringify(target),JSON.stringify(_pointer));
+                    }
                 })
 
             }
@@ -284,6 +273,19 @@ var view = function(){
             return window.getComputedStyle(ele,null)[css+'']
         }
     }
+
+    ae('body')._add({
+        id:'file-show',
+        final:true,
+        0:'opacity:0',
+        500:'opacity:1'
+    });
+    ae('body')._add({
+        id:'file-hide',
+        final:true,
+        0:'opacity:1',
+        500:'opacity:0'
+    });
 
     return public
 

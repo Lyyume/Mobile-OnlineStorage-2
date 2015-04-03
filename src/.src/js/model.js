@@ -135,6 +135,13 @@ var model = function(){
             setTimeout(function(){
                 window.open('./.open/text.html');
             },0);
+        },
+        openImage:function(str,srcStr){
+            localStorage.setItem('openImage',str);
+            localStorage.setItem('openImageSrc',srcStr);
+            setTimeout(function(){
+                window.open('./.open/image.html');
+            },0);
         }
     };
 
