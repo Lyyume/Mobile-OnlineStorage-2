@@ -98,6 +98,7 @@ var model = function(){
                     if(xhr.status === 200){
                         _tree = xhr.responseText;
                         _src = treeToObj(_tree);
+                        localStorage.setItem('src',JSON.stringify(_src));
                         _pointer = _src;
                         _arrPoint = [];
                         view.listLoad();
@@ -112,6 +113,12 @@ var model = function(){
             };
             xhr.open('GET','./tree.txt',true);
             xhr.send();
+        },
+        loadSrc:function(){
+            _src = JSON.parse(localStorage.getItem('src'));
+            _pointer = _src;
+            _arrPoint = [];
+            view.listLoad();
         },
         getConfig:function(){
             if(!localStorage.getItem('config')){

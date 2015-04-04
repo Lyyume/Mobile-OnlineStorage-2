@@ -8,8 +8,7 @@ var view = function(){
                 configSys = document.getElementById('config-sys-checkbox'),
                 configFB = document.getElementById('config-floatButton-checkbox');
 
-
-            $('body').css('height',winHei + 'px');
+            $('#article').css('height',winHei - 56 + 'px');
             if(_config.hide){
                 configHide.checked = 'checked'
             }
@@ -239,9 +238,10 @@ var view = function(){
             $('body').prepend(mask);
         },
 
-        addConfirm: function(str,fn){
+        addConfirm: function(str,fn,no){
             var confirm = document.createElement('div');
-            confirm.innerHTML = '<div>' + str + '</div><span id="confirm-yes">确认</span><span id="confirm-no">取消</span>';
+            no = no || false;
+            confirm.innerHTML = '<div>' + str + '</div><span id="confirm-yes">确认</span>';
             confirm.classList.add('confirm');
             view.addMask();
             $('#mask').css({
@@ -253,12 +253,15 @@ var view = function(){
                 }
             });
             $('#confirm-yes').on('tap',function(){
-                localStorage.clear();
+                fn();
                 $('#mask').remove();
             });
-            $('#confirm-no').on('tap',function(){
-                $('#mask').remove();
-            });
+            if(!no){
+                $(confirm).append('<span id="confirm-no">取消</span>');
+                $('#confirm-no').on('tap',function(){
+                    $('#mask').remove();
+                });
+            }
             confirm.style.marginTop = -renderStyle(confirm,'height',true)/2 + 'px';
         }
 

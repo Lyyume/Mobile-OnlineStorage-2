@@ -107,8 +107,9 @@
   z-index: 0; }
   #article .down {
     position: absolute;
+    left: 50%;
+    margin-left: -44px;
     margin-top: -20px;
-    margin-left: 16px;
     opacity: 0.88; }
     #article .down img {
       float: left;
@@ -279,3 +280,14 @@
   margin-left: 26px;
   background-color: #0e9d57;
   border: 2px solid #0e9d57; }
+
+#attention {
+  text-align: center;
+  color: #03A9F4;
+  font-family: SourceHan-N;
+  font-size: 20px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-left: -110px;
+  margin-top: -30px; }

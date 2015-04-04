@@ -2,6 +2,9 @@ var controller = function(){
 
     var public = {
         regEvents: function(){
+
+            var article = document.getElementById('article');
+
             ae('#aside').add({
                 'id':'aside-show',
                 'final':true,
@@ -55,6 +58,41 @@ var controller = function(){
                 }
             });
 
+            $(article).on('touchstart',function(e){
+                if((document.body.scrollTop === 0)){
+                    touchStartY = e.targetTouches[0].pageY;
+                }
+                else{
+                    touchStartY = e.targetTouches[0].pageY - document.body.scrollTop
+                }
+            }).on('touchmove',function(e){
+                touchMoveY = e.targetTouches[0].pageY - touchStartY;
+                if(document.body.scrollTop === 0){
+                    article.style.marginTop = touchMoveY + 'px'
+                }
+                if(touchMoveY > 56){
+                    var reText = document.getElementById('refresh-text'),
+                        reImg = document.getElementById('refresh-img');
+                    reText.innerHTML = '松开刷新';
+                    reImg.src = './.src/img/refresh.png'
+                }
+            });
+            article.addEventListener('touchend',function(e){
+                if(article.style.marginTop){
+                    e.stopPropagation();
+                }
+                if(article.style.marginTop.replace(/px/,'') > 56){
+                    _pointer = _src;
+                    $('.file').remove();
+                    $('#attention').remove();
+                    model.getSrc();
+                    var reText = document.getElementById('refresh-text'),
+                        reImg = document.getElementById('refresh-img');
+                    reText.innerHTML = '下拉刷新';
+                    reImg.src = './.src/img/down.png'
+                }
+                article.style.marginTop = null;
+            },true);
 
             $('#menu').on('tap',function(){
                 ae('#aside').clear().play('aside-show');
@@ -72,7 +110,8 @@ var controller = function(){
             });
 
             $('#float-button').on('tap',function(e){
-                console.log('fb')
+                view.addConfirm('欢迎使用本APP！<br>这个按钮只是一个DEMO，<br>您可以在设置中关掉它！<br>作者的邮箱：<br>lianmengdi.f2e@gmail.com',function(){
+                },true)
             });
 
             $('#config-hide-checkbox').on('change',function(){
@@ -123,13 +162,15 @@ var controller = function(){
 
             $('#config-clean').on('tap',function(){
                 view.addConfirm('您真的要清理本地存储吗？<br>此操作将不可恢复',function(){
-                    console.log('!')
+                    localStorage.clear();
                 })
             });
 
             $('#config-load').on('tap',function(){
+                _pointer = _src;
                 $('.file').remove();
-                view.listLoad();
+                $('#attention').remove();
+                model.getSrc();
             });
 
             $('.config').on('touchstart',function(e){
@@ -138,8 +179,12 @@ var controller = function(){
                 e.currentTarget.style.backgroundColor = '#FFFFFF';
             });
 
-            model.getSrc();
-
+            if(localStorage.getItem('src')){
+                model.loadSrc();
+            }
+            else{
+                $('#article').append('<div id="attention">未在本地缓存中找到数据<br/>请下拉刷新</div>')
+            }
         }
     };
 
