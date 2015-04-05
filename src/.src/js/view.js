@@ -241,6 +241,7 @@ var view = function(){
         addConfirm: function(str,fn,no){
             var confirm = document.createElement('div');
             no = no || false;
+            fn = fn || function(){};
             confirm.innerHTML = '<div>' + str + '</div><span id="confirm-yes">确认</span>';
             confirm.classList.add('confirm');
             view.addMask();
@@ -253,8 +254,9 @@ var view = function(){
                 }
             });
             $('#confirm-yes').on('tap',function(){
-                fn();
+                console.log('!');
                 $('#mask').remove();
+                fn();
             });
             if(!no){
                 $(confirm).append('<span id="confirm-no">取消</span>');
@@ -262,6 +264,7 @@ var view = function(){
                     $('#mask').remove();
                 });
             }
+            ae(confirm)._play('confirm-show');
             confirm.style.marginTop = -renderStyle(confirm,'height',true)/2 + 'px';
         }
 
@@ -291,6 +294,12 @@ var view = function(){
         final:true,
         0:'opacity:1',
         500:'opacity:0'
+    });
+    ae('body')._add({
+        id:'confirm-show',
+        final:true,
+        0:'opacity:0;',
+        500:'opacity:1'
     });
 
     return public

@@ -97,6 +97,70 @@ module.exports = function (grunt){
                     dest: 'src/.open/css/'
                 }]
             }
+        },
+        clean: {
+            pack: {
+                files: [{
+                    dot: true,
+                    src: [
+                        '<%= config.dist %>/*'
+                    ]
+                }]
+            }
+        },
+        concat: {
+            options: {
+                separator: ';'
+            },
+            pack: {
+                src: [
+                    '<%= config.src %>/.src/js/model.js',
+                    '<%= config.src %>/.src/js/view.js',
+                    '<%= config.src %>/.src/js/controller.js',
+                    '<%= config.src %>/.src/js/main.js'
+                ],
+                dest: '<%= config.dist %>/.src/js/index.js'
+            }
+        },
+        uglify: {
+            pack: {
+                files: {
+                    '<%= config.dist %>/.src/js/index.js':[
+                        '<%= config.dist %>/.src/js/index.js'
+                    ],
+                    '<%= config.dist %>/.open/js/audio.js':[
+                        '<%= config.dist %>/.open/js/audio/audio.js'
+                    ],
+                    '<%= config.dist %>/.open/js/image.js':[
+                        '<%= config.dist %>/.open/js/image/image.js'
+                    ],
+                    '<%= config.dist %>/.open/js/text.js':[
+                        '<%= config.dist %>/.open/js/text/text.js'
+                    ]
+                }
+            }
+        },
+        copy: {
+            pack:{
+                files: [{
+                    expand: true,
+                    dot: true,
+                    cwd: '<%= config.src %>',
+                    dest: '<%= config.dist %>',
+                    src: [
+                        '*.html',
+                        '*.command',
+                        '.src/img/*.png',
+                        '.src/css/fonts/*.*',
+                        '.src/css/*.css',
+                        '.src/js/framework/*.js',
+                        '.open/*.html',
+                        '.open/img/*.png',
+                        '.open/css/*.css',
+                        '.open/js/*.js'
+                    ]
+                }]
+            }
         }
     });
 
@@ -108,4 +172,13 @@ module.exports = function (grunt){
         'autoprefixer:go2',
         'watch'
     ]);
+
+    grunt.registerTask('pack', [
+        'clean:pack',
+        'concat:pack',
+//        'cssmin:pack',
+        'copy:pack',
+        'uglify:pack'
+    ]);
+
 };
